@@ -45,24 +45,18 @@ def ref(key):
     return f"{key} {BY_KEY[key]['title']} {url(key)}"
 
 
+NOTES_ON_TRELLO = {"EN-01", "US-05", "US-07", "US-14"}  # only the notes that change how to work
+
+
 def trello_desc(t):
-    lines = [f"**User story** — {t['story']}", "",
-             f"**Functional block:** {t['epic']} · **Actor:** {t['actor']} · **Priority (MoSCoW):** {t['priority']}",
-             f"**Use case:** {t['uc']} · **Wireframes:** {t['wireframes']} · **Sprint:** {t['sprint']}", "",
-             "---", "### 🔗 Dependencies"]
-    lines.append("**⛔ Blocked by:** " + ("none — can start now" if not t["blocked_by"] else ""))
+    lines = [t["story"], "",
+             f"*{t['epic']} · {t['priority']} · Sprint {t['sprint']} · Wireframes: {t['wireframes']}*", ""]
+    lines.append("**⬆️ Parent tickets** (to finish first): " + ("none" if not t["blocked_by"] else ""))
     lines += [f"- {ref(k)}" for k in t["blocked_by"]]
-    lines.append("**➡️ Blocks:** " + ("nothing" if not t["blocks"] else ""))
+    lines += ["", "**⬇️ Child tickets** (unlocked by this one): " + ("none" if not t["blocks"] else "")]
     lines += [f"- {ref(k)}" for k in t["blocks"]]
-    if t["relates"]:
-        lines.append("**↔️ Related to:**")
-        lines += [f"- {ref(k)}" for k in t["relates"]]
-    if t["note"]:
-        lines += ["", f"> ℹ️ {t['note']}"]
-    lines += ["", "---", "### Acceptance criteria",
-              "See the **Acceptance criteria** checklist below (tick each one when it is verified).",
-              "", "### Gherkin scenarios (acceptance tests)", "```gherkin", t["gherkin"], "```", "",
-              "---", "**Definition of Done:** all acceptance criteria ticked · Gherkin scenarios automated and green · code reviewed · merged."]
+    if t["key"] in NOTES_ON_TRELLO and t["note"]:
+        lines += ["", f"ℹ️ {t['note']}"]
     return "\n".join(lines)
 
 
@@ -115,7 +109,10 @@ def markdown():
             out.append(f"- ↔️ **Related to:** {', '.join('client questions' if r == 'QUESTIONS' else r for r in t['relates'])}")
         if t["note"]:
             out.append(f"- ℹ️ {t['note']}")
-        out += ["", "**Acceptance criteria**", ""] + [f"- [ ] {a}" for a in t["ac"]]
+        for name, items in t.get("checklists", {}).items():
+            out += ["", f"**{name}**", ""] + [f"- [ ] {a}" for a in items]
+        if t["ac"]:
+            out += ["", "**Acceptance criteria**", ""] + [f"- [ ] {a}" for a in t["ac"]]
         out += ["", "**Gherkin**", "", "```gherkin", t["gherkin"], "```", ""]
     return "\n".join(out)
 

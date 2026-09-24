@@ -37,25 +37,46 @@ EPIC_COLOR = {
 
 TICKETS = [
     dict(
-        key="EN-01", title="Project foundation: user model, roles, student–volunteer link, page layout",
-        epic="Foundation", actor="Dev team (enabler)", priority="Must", uc="-", wireframes="All (shared header/menu)",
+        key="EN-01", title="Foundation: domain, hosting, HTTPS and Python project setup",
+        epic="Foundation", actor="Dev team", priority="Must", uc="-", wireframes="All (shared header/menu)",
         sprint=1, list="✅ Ready for Dev (Sprint 1)",
-        story=("Enabler ticket (no user story of its own). It groups what several user stories need "
-               "before they can start, so that they are not blocked by each other."),
-        ac=[
-            "Project repository, Python web framework, database and test runner (Gherkin: behave / pytest-bdd) are set up.",
-            "User entity with first name, last name, email, hashed password and role (Student / Volunteer).",
-            "'Follows' relationship: one student has one assigned volunteer; a volunteer follows 0..n students (kick-off notes). Needed by US-14 and US-16.",
-            "Shared page layout: header with the logged-in user's name, a menu (Dashboard, Chat, Calendar, Tasks) and a place for the 'Log out' button (wireframes 4 to 8).",
-            "Seed data: 1 volunteer following 2 students + 1 student not followed (used by the Gherkin scenarios: Jean Dupont, Clarisse Roger, Lucas Martin).",
-        ],
-        gherkin="""Feature: Project foundation
-  Scenario: A student is followed by a volunteer
-    Given the seed data is loaded
-    Then the student "Jean Dupont" has exactly one assigned volunteer
-    And the student "Lucas Martin" is not followed by that volunteer""",
+        story=("First ticket to do. Prepare the ground before coding the Learn@Home website in Python: "
+               "domain name, hosting, HTTPS, project skeleton, and the user base shared by all the other tickets."),
+        checklists={
+            "1. Domain, hosting & security": [
+                "Choose and reserve the domain name (e.g. learnathome.org) with a registrar (OVH, Gandi...)",
+                "Choose the hosting for a Python web app (PaaS like Render / Scalingo, or a VPS)",
+                "Configure the DNS records so the domain points to the host",
+                "Enable HTTPS: SSL/TLS certificate (Let's Encrypt, auto-renewal) + redirect HTTP to HTTPS",
+                "Create the database (PostgreSQL) on the host",
+                "Choose an email sending service (needed by US-03 password reset) and configure SPF / DKIM on the domain",
+                "Legal basics: legal notice + privacy policy (GDPR, the site handles minors' data)",
+            ],
+            "2. Python project setup": [
+                "Git repository + branch strategy (main / develop / feature branches)",
+                "Python version, virtual environment and requirements file",
+                "Web framework chosen (e.g. Django) and project skeleton created",
+                "Secrets and settings in environment variables (.env never committed)",
+                "Dev, staging and production environments",
+                "Test runner with Gherkin support (behave / pytest-bdd) + linter",
+                "CI: tests run on every push, automatic deployment to staging",
+                "A first 'Hello Learn@Home' page is online on the domain, over HTTPS",
+            ],
+            "3. Base for the user stories": [
+                "User model: first name, last name, email, hashed password, role (Student / Volunteer)",
+                "'Follows' link: a student has one volunteer, a volunteer follows several students",
+                "Shared page layout: header, menu (Dashboard, Chat, Calendar, Tasks), place for the Log out button",
+                "Test data: 1 volunteer, 2 followed students, 1 student not followed",
+            ],
+        },
+        ac=[],
+        gherkin="""Feature: Foundation
+  Scenario: The site is online and secure
+    When I open http://<domain>
+    Then I am redirected to https://<domain>
+    And I see the Learn@Home home page""",
         blocked_by=[], blocks=["US-01", "US-02", "US-14", "US-16"], relates=["QUESTIONS"],
-        note="Q1 (who assigns a volunteer to a student?) must be answered before production, but it does not block development: seed data is used in the meantime.",
+        note="Start with this ticket: every other ticket depends on it directly or indirectly.",
     ),
     dict(
         key="US-01", title="Create an account", epic="Authentication", actor="Visitor", priority="Must",
@@ -182,7 +203,7 @@ TICKETS = [
     Then the dashboard is displayed
     And I see my to-do list, my upcoming appointments and my unread messages counter""",
         blocked_by=["US-02"], blocks=["US-06", "US-07", "US-08"], relates=[],
-        note="This ticket delivers the page and the 3 empty block containers. The content of each block is delivered by US-06, US-07 and US-08, so the full Gherkin scenario passes only when those 3 are done.",
+        note="Delivers the page and its 3 empty blocks; their content comes from US-06, US-07 and US-08.",
     ),
     dict(
         key="US-06", title="Dashboard: view to-do list (tasks)", epic="Dashboard", actor="Registered User", priority="Must",
@@ -227,7 +248,7 @@ TICKETS = [
     When I open my dashboard
     Then I see the message "No upcoming appointment\"""",
         blocked_by=["US-05", "US-12"], blocks=[], relates=["US-14", "QUESTIONS"],
-        note="Appointments are only created by US-14 (Should). Until US-14 is done, test with seed data. See client question Q2.",
+        note="Until US-14 exists, appointments come from test data.",
     ),
     dict(
         key="US-08", title="Dashboard: unread messages counter", epic="Dashboard", actor="Registered User", priority="Must",
@@ -386,7 +407,7 @@ TICKETS = [
     When I open the Calendar page
     Then I do not see the "New appointment" button""",
         blocked_by=["US-12", "EN-01"], blocks=[], relates=["US-07", "QUESTIONS"],
-        note="Priority 'Should' so it is in the Backlog, but it is the ONLY way to create appointments shown by US-07/US-12/US-13 (Must). Recommendation: raise to Must (client question Q2).",
+        note="Only way to create appointments: we recommend raising it to Must (client question Q2).",
     ),
     dict(
         key="US-15", title="Create and manage my own tasks", epic="Task management", actor="Registered User", priority="Must",

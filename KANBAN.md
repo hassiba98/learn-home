@@ -23,7 +23,7 @@ Labels (colour = functional block): 🟢 Authentication · 🔵 Dashboard · �
 
 ```mermaid
 graph LR
-  EN01["EN-01<br/>Project foundation: user model, roles, student–volunteer link, page layout<br/>S1"]
+  EN01["EN-01<br/>Foundation: domain, hosting, HTTPS and Python project setup<br/>S1"]
   US01["US-01<br/>Create an account<br/>S1"]
   US02["US-02<br/>Log in (+ protected pages)<br/>S1"]
   US03["US-03<br/>Recover forgotten password<br/>S2"]
@@ -79,7 +79,7 @@ Arrow `A --> B` = *A blocks B* (B cannot be finished before A).
 
 | Ticket | Title | Block | Priority | List | Blocked by | Blocks |
 |---|---|---|---|---|---|---|
-| [EN-01](https://trello.com/c/J3nnZnae) | Project foundation: user model, roles, student–volunteer link, page layout | Foundation | Must | ✅ Ready for Dev (Sprint 1) | — | US-01, US-02, US-14, US-16 |
+| [EN-01](https://trello.com/c/J3nnZnae) | Foundation: domain, hosting, HTTPS and Python project setup | Foundation | Must | ✅ Ready for Dev (Sprint 1) | — | US-01, US-02, US-14, US-16 |
 | [US-01](https://trello.com/c/jP0SNbZu) | Create an account | Authentication | Must | ✅ Ready for Dev (Sprint 1) | EN-01 | US-03 |
 | [US-02](https://trello.com/c/6zpG0zaB) | Log in (+ protected pages) | Authentication | Must | ✅ Ready for Dev (Sprint 1) | EN-01 | US-03, US-04, US-05, US-10, US-12, US-15 |
 | [US-03](https://trello.com/c/3OUMsbTY) | Recover forgotten password | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-01, US-02 | — |
@@ -108,33 +108,53 @@ Arrow `A --> B` = *A blocks B* (B cannot be finished before A).
 
 ## Tickets
 
-### EN-01 · Project foundation: user model, roles, student–volunteer link, page layout
+### EN-01 · Foundation: domain, hosting, HTTPS and Python project setup
 
-**List:** ✅ Ready for Dev (Sprint 1) · **Sprint:** 1 · **Block:** Foundation · **Actor:** Dev team (enabler) · **Priority:** Must · **Use case:** - · **Wireframes:** All (shared header/menu) · [Trello card](https://trello.com/c/J3nnZnae)
+**List:** ✅ Ready for Dev (Sprint 1) · **Sprint:** 1 · **Block:** Foundation · **Actor:** Dev team · **Priority:** Must · **Use case:** - · **Wireframes:** All (shared header/menu) · [Trello card](https://trello.com/c/J3nnZnae)
 
-> Enabler ticket (no user story of its own). It groups what several user stories need before they can start, so that they are not blocked by each other.
+> First ticket to do. Prepare the ground before coding the Learn@Home website in Python: domain name, hosting, HTTPS, project skeleton, and the user base shared by all the other tickets.
 
 - ⛔ **Blocked by:** none
 - ➡️ **Blocks:** US-01, US-02, US-14, US-16
 - ↔️ **Related to:** client questions
-- ℹ️ Q1 (who assigns a volunteer to a student?) must be answered before production, but it does not block development: seed data is used in the meantime.
+- ℹ️ Start with this ticket: every other ticket depends on it directly or indirectly.
 
-**Acceptance criteria**
+**1. Domain, hosting & security**
 
-- [ ] Project repository, Python web framework, database and test runner (Gherkin: behave / pytest-bdd) are set up.
-- [ ] User entity with first name, last name, email, hashed password and role (Student / Volunteer).
-- [ ] 'Follows' relationship: one student has one assigned volunteer; a volunteer follows 0..n students (kick-off notes). Needed by US-14 and US-16.
-- [ ] Shared page layout: header with the logged-in user's name, a menu (Dashboard, Chat, Calendar, Tasks) and a place for the 'Log out' button (wireframes 4 to 8).
-- [ ] Seed data: 1 volunteer following 2 students + 1 student not followed (used by the Gherkin scenarios: Jean Dupont, Clarisse Roger, Lucas Martin).
+- [ ] Choose and reserve the domain name (e.g. learnathome.org) with a registrar (OVH, Gandi...)
+- [ ] Choose the hosting for a Python web app (PaaS like Render / Scalingo, or a VPS)
+- [ ] Configure the DNS records so the domain points to the host
+- [ ] Enable HTTPS: SSL/TLS certificate (Let's Encrypt, auto-renewal) + redirect HTTP to HTTPS
+- [ ] Create the database (PostgreSQL) on the host
+- [ ] Choose an email sending service (needed by US-03 password reset) and configure SPF / DKIM on the domain
+- [ ] Legal basics: legal notice + privacy policy (GDPR, the site handles minors' data)
+
+**2. Python project setup**
+
+- [ ] Git repository + branch strategy (main / develop / feature branches)
+- [ ] Python version, virtual environment and requirements file
+- [ ] Web framework chosen (e.g. Django) and project skeleton created
+- [ ] Secrets and settings in environment variables (.env never committed)
+- [ ] Dev, staging and production environments
+- [ ] Test runner with Gherkin support (behave / pytest-bdd) + linter
+- [ ] CI: tests run on every push, automatic deployment to staging
+- [ ] A first 'Hello Learn@Home' page is online on the domain, over HTTPS
+
+**3. Base for the user stories**
+
+- [ ] User model: first name, last name, email, hashed password, role (Student / Volunteer)
+- [ ] 'Follows' link: a student has one volunteer, a volunteer follows several students
+- [ ] Shared page layout: header, menu (Dashboard, Chat, Calendar, Tasks), place for the Log out button
+- [ ] Test data: 1 volunteer, 2 followed students, 1 student not followed
 
 **Gherkin**
 
 ```gherkin
-Feature: Project foundation
-  Scenario: A student is followed by a volunteer
-    Given the seed data is loaded
-    Then the student "Jean Dupont" has exactly one assigned volunteer
-    And the student "Lucas Martin" is not followed by that volunteer
+Feature: Foundation
+  Scenario: The site is online and secure
+    When I open http://<domain>
+    Then I am redirected to https://<domain>
+    And I see the Learn@Home home page
 ```
 
 ### US-01 · Create an account
@@ -293,7 +313,7 @@ Feature: Log out
 
 - ⛔ **Blocked by:** US-02
 - ➡️ **Blocks:** US-06, US-07, US-08
-- ℹ️ This ticket delivers the page and the 3 empty block containers. The content of each block is delivered by US-06, US-07 and US-08, so the full Gherkin scenario passes only when those 3 are done.
+- ℹ️ Delivers the page and its 3 empty blocks; their content comes from US-06, US-07 and US-08.
 
 **Acceptance criteria**
 
@@ -459,7 +479,7 @@ Feature: View to-do list (tasks)
 - ⛔ **Blocked by:** US-05, US-12
 - ➡️ **Blocks:** nothing
 - ↔️ **Related to:** US-14, client questions
-- ℹ️ Appointments are only created by US-14 (Should). Until US-14 is done, test with seed data. See client question Q2.
+- ℹ️ Until US-14 exists, appointments come from test data.
 
 **Acceptance criteria**
 
@@ -647,7 +667,7 @@ Feature: View chat history
 - ⛔ **Blocked by:** US-12, EN-01
 - ➡️ **Blocks:** nothing
 - ↔️ **Related to:** US-07, client questions
-- ℹ️ Priority 'Should' so it is in the Backlog, but it is the ONLY way to create appointments shown by US-07/US-12/US-13 (Must). Recommendation: raise to Must (client question Q2).
+- ℹ️ Only way to create appointments: we recommend raising it to Must (client question Q2).
 
 **Acceptance criteria**
 

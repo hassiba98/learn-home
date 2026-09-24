@@ -20,9 +20,9 @@ def validate():
         # a ticket is never planned in an earlier sprint than what blocks it
         for dep in t["blocked_by"]:
             assert BY_KEY[dep]["sprint"] <= t["sprint"], (t["key"], dep)
-        # only tickets without an open dependency outside sprint 1 are Ready for Dev
+        # a ticket with a dependency is in Blocked (or Backlog), never Ready for Dev
         if t["list"].startswith("✅"):
-            assert all(BY_KEY[d]["list"].startswith("✅") for d in t["blocked_by"]), t["key"]
+            assert not t["blocked_by"], t["key"]
     # no dependency cycle
     state = {}
 
@@ -45,15 +45,13 @@ def ref(key):
     return f"{key} {BY_KEY[key]['title']} {url(key)}"
 
 
-NOTES_ON_TRELLO = {"EN-01", "US-05", "US-07", "US-14"}  # only the notes that change how to work
+NOTES_ON_TRELLO = {"US-05", "US-07", "US-14"}  # only the notes that change how to work
 
 
 def trello_desc(t):
-    lines = [t["story"], "", f"*{t['epic']} · {t['priority']} · Wireframes: {t['wireframes']}*", ""]
-    lines.append("**⬆️ Parent tickets** (to finish first): " + ("none" if not t["blocked_by"] else ""))
-    lines += [f"- {ref(k)}" for k in t["blocked_by"]]
-    lines += ["", "**⬇️ Child tickets** (unlocked by this one): " + ("none" if not t["blocks"] else "")]
-    lines += [f"- {ref(k)}" for k in t["blocks"]]
+    lines = [t["story"], "", f"*{t['epic']} · {t['priority']} · Wireframes: {t['wireframes']}*"]
+    if t["blocked_by"]:
+        lines += ["", "**⛔ Blocked by:**"] + [f"- {ref(k)}" for k in t["blocked_by"]]
     if t["key"] in NOTES_ON_TRELLO and t["note"]:
         lines += ["", f"ℹ️ {t['note']}"]
     lines += ["", "**🧪 QA – Gherkin scenarios**", "```gherkin", t["gherkin"], "```"]
@@ -70,7 +68,7 @@ def markdown():
            "| List | Meaning |", "|---|---|",
            "| 📘 Read me & Client questions | Legend + questions to validate with Learn@Home |",
            "| Backlog (Should / later) | Priority *Should*: not in the first version unless the client decides otherwise |",
-           "| ⛔ Blocked | *Must* tickets waiting for at least one other ticket (see **Blocked by**) |",
+           "| ⛔ Blocked | Tickets waiting for another ticket (see **Blocked by**) |",
            "| ✅ Ready for Dev | Nothing blocks them: the team starts here |",
            "| In Progress / Code Review / QA / Done | Normal flow. QA = Gherkin scenarios automated and green |",
            "", "**Rule:** a ticket moves from *Blocked* to *Ready for Dev* when every ticket in its "
@@ -84,10 +82,10 @@ def markdown():
             out.append(f'  {d.replace("-", "")} --> {t["key"].replace("-", "")}')
     out += ["```", "", "Arrow `A --> B` = *A blocks B* (B cannot be finished before A).", ""]
     out += ["", "## Summary", "",
-            "| Ticket | Title | Block | Priority | List | Parent tickets | Child tickets |", "|---|---|---|---|---|---|---|"]
+            "| Ticket | Title | Block | Priority | List | Blocked by |", "|---|---|---|---|---|---|"]
     for t in sorted(TICKETS, key=lambda t: (t["sprint"], t["key"])):
         out.append(f"| [{t['key']}]({url(t['key'])}) | {t['title']} | {t['epic']} | {t['priority']} | {t['list']} | "
-                   f"{', '.join(t['blocked_by']) or '—'} | {', '.join(t['blocks']) or '—'} |")
+                   f"{', '.join(t['blocked_by']) or '—'} |")
     out += ["", "## Open questions for Learn@Home", ""]
     for q, text, rel in QUESTIONS:
         out.append(f"- **{q}** — {text} *(impacts: {', '.join(rel)})*")
@@ -97,11 +95,9 @@ def markdown():
                 f"**List:** {t['list']} · **Block:** {t['epic']} · "
                 f"**Actor:** {t['actor']} · **Priority:** {t['priority']} · **Use case:** {t['uc']} · "
                 f"**Wireframes:** {t['wireframes']} · [Trello card]({url(t['key'])})", "",
-                f"> {t['story']}", "",
-                f"- ⛔ **Blocked by:** {', '.join(t['blocked_by']) or 'none'}",
-                f"- ➡️ **Blocks:** {', '.join(t['blocks']) or 'nothing'}"]
-        if t["relates"]:
-            out.append(f"- ↔️ **Related to:** {', '.join('client questions' if r == 'QUESTIONS' else r for r in t['relates'])}")
+                f"> {t['story']}", ""]
+        if t["blocked_by"]:
+            out.append(f"- ⛔ **Blocked by:** {', '.join(t['blocked_by'])}")
         if t["note"]:
             out.append(f"- ℹ️ {t['note']}")
         for name, items in t.get("checklists", {}).items():

@@ -11,7 +11,7 @@ This document mirrors the Trello board. It is generated from `kanban/board_data.
 |---|---|
 | 📘 Read me & Client questions | Legend + questions to validate with Learn@Home |
 | Backlog (Should / later) | Priority *Should*: not in the first version unless the client decides otherwise |
-| ⛔ Blocked | *Must* tickets waiting for at least one other ticket (see **Blocked by**) |
+| ⛔ Blocked | Tickets waiting for another ticket (see **Blocked by**) |
 | ✅ Ready for Dev | Nothing blocks them: the team starts here |
 | In Progress / Code Review / QA / Done | Normal flow. QA = Gherkin scenarios automated and green |
 
@@ -69,25 +69,25 @@ Arrow `A --> B` = *A blocks B* (B cannot be finished before A).
 
 ## Summary
 
-| Ticket | Title | Block | Priority | List | Parent tickets | Child tickets |
-|---|---|---|---|---|---|---|
-| [EN-01](https://trello.com/c/J3nnZnae) | Foundation: domain, hosting, HTTPS and Python project setup | Foundation | Must | ✅ Ready for Dev | — | US-01, US-02, US-14, US-16 |
-| [US-01](https://trello.com/c/jP0SNbZu) | Create an account | Authentication | Must | ✅ Ready for Dev | EN-01 | US-03 |
-| [US-02](https://trello.com/c/6zpG0zaB) | Log in (+ protected pages) | Authentication | Must | ✅ Ready for Dev | EN-01 | US-03, US-04, US-05, US-10, US-12, US-15 |
-| [US-03](https://trello.com/c/3OUMsbTY) | Recover forgotten password | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-01, US-02 | — |
-| [US-04](https://trello.com/c/N9p7OIYh) | Log out | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-02 | — |
-| [US-05](https://trello.com/c/4iWti71s) | View my dashboard (page + menu) | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-02 | US-06, US-07, US-08 |
-| [US-10](https://trello.com/c/8iU5i7Jb) | Manage contacts (add / delete) | Chat | Must | ⛔ Blocked (waiting on dependencies) | US-02 | US-09 |
-| [US-12](https://trello.com/c/dmnQ7KxL) | View my calendar | Calendar | Must | ⛔ Blocked (waiting on dependencies) | US-02 | US-07, US-13, US-14 |
-| [US-15](https://trello.com/c/uJETs0om) | Create and manage my own tasks | Task management | Must | ⛔ Blocked (waiting on dependencies) | US-02 | US-06, US-16 |
-| [US-06](https://trello.com/c/5sFSxo39) | Dashboard: view to-do list (tasks) | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-05, US-15 | — |
-| [US-07](https://trello.com/c/Avxd1ueY) | Dashboard: view upcoming appointments | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-05, US-12 | — |
-| [US-09](https://trello.com/c/d42rg07h) | Send and read instant messages | Chat | Must | ⛔ Blocked (waiting on dependencies) | US-10 | US-08, US-11 |
-| [US-13](https://trello.com/c/3XE0Mj9A) | View appointment details | Calendar | Must | ⛔ Blocked (waiting on dependencies) | US-12 | — |
-| [US-16](https://trello.com/c/Gkx8gA8a) | Create a task for a followed student (volunteer) | Task management | Must | ⛔ Blocked (waiting on dependencies) | US-15, EN-01 | — |
-| [US-08](https://trello.com/c/MIN2KBjK) | Dashboard: unread messages counter | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-05, US-09 | — |
-| [US-11](https://trello.com/c/AGUa2O4v) | View chat history | Chat | Must | ⛔ Blocked (waiting on dependencies) | US-09 | — |
-| [US-14](https://trello.com/c/EDY1wLXp) | Schedule an appointment with a student (volunteer) | Calendar | Should | Backlog (Should / later) | US-12, EN-01 | — |
+| Ticket | Title | Block | Priority | List | Blocked by |
+|---|---|---|---|---|---|
+| [EN-01](https://trello.com/c/J3nnZnae) | Foundation: domain, hosting, HTTPS and Python project setup | Foundation | Must | ✅ Ready for Dev | — |
+| [US-01](https://trello.com/c/jP0SNbZu) | Create an account | Authentication | Must | ⛔ Blocked (waiting on dependencies) | EN-01 |
+| [US-02](https://trello.com/c/6zpG0zaB) | Log in (+ protected pages) | Authentication | Must | ⛔ Blocked (waiting on dependencies) | EN-01 |
+| [US-03](https://trello.com/c/3OUMsbTY) | Recover forgotten password | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-01, US-02 |
+| [US-04](https://trello.com/c/N9p7OIYh) | Log out | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-02 |
+| [US-05](https://trello.com/c/4iWti71s) | View my dashboard (page + menu) | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-02 |
+| [US-10](https://trello.com/c/8iU5i7Jb) | Manage contacts (add / delete) | Chat | Must | ⛔ Blocked (waiting on dependencies) | US-02 |
+| [US-12](https://trello.com/c/dmnQ7KxL) | View my calendar | Calendar | Must | ⛔ Blocked (waiting on dependencies) | US-02 |
+| [US-15](https://trello.com/c/uJETs0om) | Create and manage my own tasks | Task management | Must | ⛔ Blocked (waiting on dependencies) | US-02 |
+| [US-06](https://trello.com/c/5sFSxo39) | Dashboard: view to-do list (tasks) | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-05, US-15 |
+| [US-07](https://trello.com/c/Avxd1ueY) | Dashboard: view upcoming appointments | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-05, US-12 |
+| [US-09](https://trello.com/c/d42rg07h) | Send and read instant messages | Chat | Must | ⛔ Blocked (waiting on dependencies) | US-10 |
+| [US-13](https://trello.com/c/3XE0Mj9A) | View appointment details | Calendar | Must | ⛔ Blocked (waiting on dependencies) | US-12 |
+| [US-16](https://trello.com/c/Gkx8gA8a) | Create a task for a followed student (volunteer) | Task management | Must | ⛔ Blocked (waiting on dependencies) | US-15, EN-01 |
+| [US-08](https://trello.com/c/MIN2KBjK) | Dashboard: unread messages counter | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-05, US-09 |
+| [US-11](https://trello.com/c/AGUa2O4v) | View chat history | Chat | Must | ⛔ Blocked (waiting on dependencies) | US-09 |
+| [US-14](https://trello.com/c/EDY1wLXp) | Schedule an appointment with a student (volunteer) | Calendar | Should | Backlog (Should / later) | US-12, EN-01 |
 
 ## Open questions for Learn@Home
 
@@ -106,9 +106,6 @@ Arrow `A --> B` = *A blocks B* (B cannot be finished before A).
 
 > First ticket to do. Prepare the ground before coding the Learn@Home website in Python: domain name, hosting, HTTPS, project skeleton, and the user base shared by all the other tickets.
 
-- ⛔ **Blocked by:** none
-- ➡️ **Blocks:** US-01, US-02, US-14, US-16
-- ↔️ **Related to:** client questions
 - ℹ️ Start with this ticket: every other ticket depends on it directly or indirectly.
 
 **1. Domain, hosting & security**
@@ -151,13 +148,11 @@ Feature: Foundation
 
 ### US-01 · Create an account
 
-**List:** ✅ Ready for Dev · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-01 · **Wireframes:** 1. Login, 2. Create account · [Trello card](https://trello.com/c/jP0SNbZu)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-01 · **Wireframes:** 1. Login, 2. Create account · [Trello card](https://trello.com/c/jP0SNbZu)
 
 > As a visitor, I want to create an account with my email and a password, so that I can access the Learn@Home platform.
 
 - ⛔ **Blocked by:** EN-01
-- ➡️ **Blocks:** US-03
-- ↔️ **Related to:** US-02
 - ℹ️ Can start in parallel with EN-01 (form + validation rules), then plugs into the User model once EN-01 is merged.
 
 **Requirements (to do)**
@@ -188,13 +183,11 @@ Feature: Create an account
 
 ### US-02 · Log in (+ protected pages)
 
-**List:** ✅ Ready for Dev · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-02 · **Wireframes:** 1. Login · [Trello card](https://trello.com/c/6zpG0zaB)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-02 · **Wireframes:** 1. Login · [Trello card](https://trello.com/c/6zpG0zaB)
 
 > As a visitor who has an account, I want to log in with my email and password, so that I can access my personal space.
 
 - ⛔ **Blocked by:** EN-01
-- ➡️ **Blocks:** US-03, US-04, US-05, US-10, US-12, US-15
-- ↔️ **Related to:** US-01
 - ℹ️ Critical path: 6 tickets wait for this one. Until US-05 exists, AC2 redirects to a temporary empty dashboard page.
 
 **Requirements (to do)**
@@ -235,7 +228,6 @@ Feature: Log in
 > As a visitor who forgot my password, I want to receive a reset link by email, so that I can choose a new password and access my account again.
 
 - ⛔ **Blocked by:** US-01, US-02
-- ➡️ **Blocks:** nothing
 - ℹ️ Needs the password rules of US-01 and the login page of US-02. Also needs an email-sending service (external actor 'Email Service').
 
 **Requirements (to do)**
@@ -271,8 +263,6 @@ Feature: Recover forgotten password
 > As a registered user, I want to log out, so that nobody else can access my account from the same device.
 
 - ⛔ **Blocked by:** US-02
-- ➡️ **Blocks:** nothing
-- ↔️ **Related to:** EN-01
 - ℹ️ The button lives in the shared header created in EN-01.
 
 **Requirements (to do)**
@@ -304,7 +294,6 @@ Feature: Log out
 > As a registered user, I want to see a dashboard when I log in, so that I get an overview of my important information at a glance.
 
 - ⛔ **Blocked by:** US-02
-- ➡️ **Blocks:** US-06, US-07, US-08
 - ℹ️ Delivers the page and its 3 empty blocks; their content comes from US-06, US-07 and US-08.
 
 **Requirements (to do)**
@@ -331,8 +320,6 @@ Feature: View my dashboard
 > As a registered user, I want to add and delete contacts, so that my contact list only contains the people I work with.
 
 - ⛔ **Blocked by:** US-02
-- ➡️ **Blocks:** US-09
-- ↔️ **Related to:** client questions
 - ℹ️ First Chat ticket: it creates the Chat page and the conversation list. Search scope (all users or only the assigned volunteer/students?): see client question Q4.
 
 **Requirements (to do)**
@@ -365,7 +352,6 @@ Feature: Manage contacts (add / delete)
 > As a registered user, I want to see my events and appointments in a calendar, so that I can organise my week.
 
 - ⛔ **Blocked by:** US-02
-- ➡️ **Blocks:** US-07, US-13, US-14
 - ℹ️ Creates the Appointment data (title, date, start/end time, participants, description), filled with seed data until US-14 is done.
 
 **Requirements (to do)**
@@ -397,7 +383,6 @@ Feature: View my calendar
 > As a registered user, I want to create, view, update and mark my tasks as done, so that I stay organised in my work.
 
 - ⛔ **Blocked by:** US-02
-- ➡️ **Blocks:** US-06, US-16
 - ℹ️ Creates the Task data (title, description, due date, creator, assignee, done).
 
 **Requirements (to do)**
@@ -436,8 +421,6 @@ Feature: Create and manage my own tasks
 > As a registered user, I want to see my tasks to do on my dashboard, so that I know what I have to do next.
 
 - ⛔ **Blocked by:** US-05, US-15
-- ➡️ **Blocks:** nothing
-- ↔️ **Related to:** US-16
 - ℹ️ Tasks assigned by a volunteer (US-16) must also appear here, with "Assigned by".
 
 **Requirements (to do)**
@@ -469,8 +452,6 @@ Feature: View to-do list (tasks)
 > As a registered user, I want to see my upcoming appointments on my dashboard, so that I don't miss a tutoring session.
 
 - ⛔ **Blocked by:** US-05, US-12
-- ➡️ **Blocks:** nothing
-- ↔️ **Related to:** US-14, client questions
 - ℹ️ Until US-14 exists, appointments come from test data.
 
 **Requirements (to do)**
@@ -501,8 +482,6 @@ Feature: View upcoming appointments
 > As a registered user, I want to exchange instant messages with my contacts, so that I can communicate directly on the site instead of WhatsApp or SMS.
 
 - ⛔ **Blocked by:** US-10
-- ➡️ **Blocks:** US-08, US-11
-- ↔️ **Related to:** client questions
 - ℹ️ A conversation only exists once a contact is added (US-10 AC2). Profile picture: see client question Q3.
 
 **Requirements (to do)**
@@ -542,7 +521,6 @@ Feature: Send and read instant messages
 > As a registered user, I want to click on an appointment to see its details, so that I know exactly what is planned.
 
 - ⛔ **Blocked by:** US-12
-- ➡️ **Blocks:** nothing
 
 **Requirements (to do)**
 
@@ -566,8 +544,6 @@ Feature: View appointment details
 > As a volunteer, I want to create a task for one of my students, so that I can guide their work between our sessions.
 
 - ⛔ **Blocked by:** US-15, EN-01
-- ➡️ **Blocks:** nothing
-- ↔️ **Related to:** US-06
 - ℹ️ Adds the 'Assign to (volunteer only)' field to the form built in US-15, using the 'follows' link from EN-01.
 
 **Requirements (to do)**
@@ -599,7 +575,6 @@ Feature: Create a task for a followed student
 > As a registered user, I want to see how many messages I have not read, so that I know if someone is waiting for my answer.
 
 - ⛔ **Blocked by:** US-05, US-09
-- ➡️ **Blocks:** nothing
 - ℹ️ Reuses the read/unread status and the real-time mechanism built in US-09.
 
 **Requirements (to do)**
@@ -630,7 +605,6 @@ Feature: View unread messages counter
 > As a registered user, I want to scroll back through my past messages, so that I can find information that was shared earlier.
 
 - ⛔ **Blocked by:** US-09
-- ➡️ **Blocks:** nothing
 
 **Requirements (to do)**
 
@@ -657,8 +631,6 @@ Feature: View chat history
 > As a volunteer, I want to schedule an appointment with one of my students, so that we can plan our weekly tutoring session.
 
 - ⛔ **Blocked by:** US-12, EN-01
-- ➡️ **Blocks:** nothing
-- ↔️ **Related to:** US-07, client questions
 - ℹ️ Only way to create appointments: we recommend raising it to Must (client question Q2).
 
 **Requirements (to do)**

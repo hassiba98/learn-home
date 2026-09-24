@@ -67,12 +67,9 @@ def issue_body(t, numbers):
              "| Functional block | Actor | Priority | Use case | Wireframes |",
              "|---|---|---|---|---|",
              f"| {t['epic']} | {t['actor']} | {t['priority']} | {t['uc']} | {t['wireframes']} |",
-             "", ""]
-    lines.append("**⬆️ Parent tickets:** " + (", ".join(ref(k) for k in t["blocked_by"]) or "none, can start now"))
-    lines.append("")
-    lines.append("**⬇️ Child tickets:** " + (", ".join(ref(k) for k in t["blocks"]) or "nothing"))
-    if t["relates"]:
-        lines += ["", "**Related to:** " + ", ".join(ref(k) for k in t["relates"])]
+             ""]
+    if t["blocked_by"]:
+        lines.append("**⛔ Blocked by:** " + ", ".join(ref(k) for k in t["blocked_by"]))
     if t["note"]:
         lines += ["", f"> **Note:** {t['note']}"]
     for name, items in t.get("checklists", {}).items():

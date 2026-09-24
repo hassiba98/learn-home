@@ -80,7 +80,7 @@ TICKETS = [
     ),
     dict(
         key="US-01", title="Create an account", epic="Authentication", actor="Visitor", priority="Must",
-        uc="UC-01", wireframes="1. Login, 2. Create account", sprint=1, list="✅ Ready for Dev",
+        uc="UC-01", wireframes="1. Login, 2. Create account", sprint=1, list="⛔ Blocked (waiting on dependencies)",
         story="As a visitor, I want to create an account with my email and a password, so that I can access the Learn@Home platform.",
         ac=[
             'AC1. The login page contains a "Create an account" link that opens the account creation page.',
@@ -107,7 +107,7 @@ TICKETS = [
     ),
     dict(
         key="US-02", title="Log in (+ protected pages)", epic="Authentication", actor="Visitor", priority="Must",
-        uc="UC-02", wireframes="1. Login", sprint=1, list="✅ Ready for Dev",
+        uc="UC-02", wireframes="1. Login", sprint=1, list="⛔ Blocked (waiting on dependencies)",
         story="As a visitor who has an account, I want to log in with my email and password, so that I can access my personal space.",
         ac=[
             'AC1. The login page contains an Email field, a Password field, a "Log in" button, a "Forgot password?" link and a "Create an account" link.',

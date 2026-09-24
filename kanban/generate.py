@@ -49,14 +49,14 @@ NOTES_ON_TRELLO = {"EN-01", "US-05", "US-07", "US-14"}  # only the notes that ch
 
 
 def trello_desc(t):
-    lines = [t["story"], "",
-             f"*{t['epic']} · {t['priority']} · Sprint {t['sprint']} · Wireframes: {t['wireframes']}*", ""]
+    lines = [t["story"], "", f"*{t['epic']} · {t['priority']} · Wireframes: {t['wireframes']}*", ""]
     lines.append("**⬆️ Parent tickets** (to finish first): " + ("none" if not t["blocked_by"] else ""))
     lines += [f"- {ref(k)}" for k in t["blocked_by"]]
     lines += ["", "**⬇️ Child tickets** (unlocked by this one): " + ("none" if not t["blocks"] else "")]
     lines += [f"- {ref(k)}" for k in t["blocks"]]
     if t["key"] in NOTES_ON_TRELLO and t["note"]:
         lines += ["", f"ℹ️ {t['note']}"]
+    lines += ["", "**🧪 QA – Gherkin scenarios**", "```gherkin", t["gherkin"], "```"]
     return "\n".join(lines)
 
 
@@ -71,25 +71,20 @@ def markdown():
            "| 📘 Read me & Client questions | Legend + questions to validate with Learn@Home |",
            "| Backlog (Should / later) | Priority *Should*: not in the first version unless the client decides otherwise |",
            "| ⛔ Blocked | *Must* tickets waiting for at least one other ticket (see **Blocked by**) |",
-           "| ✅ Ready for Dev (Sprint 1) | Nothing blocks them: the team starts here |",
+           "| ✅ Ready for Dev | Nothing blocks them: the team starts here |",
            "| In Progress / Code Review / QA / Done | Normal flow. QA = Gherkin scenarios automated and green |",
            "", "**Rule:** a ticket moves from *Blocked* to *Ready for Dev* when every ticket in its "
            "*Blocked by* checklist is in *Done*.", "",
            "Labels (colour = functional block): 🟢 Authentication · 🔵 Dashboard · 🟣 Chat · 🟡 Calendar · 🟠 Task management · 🔴 Blocked (EN-01 has no colour)", "",
            "## Dependency graph", "", "```mermaid", "graph LR"]
     for t in TICKETS:
-        out.append(f'  {t["key"].replace("-", "")}["{t["key"]}<br/>{t["title"]}<br/>S{t["sprint"]}"]')
+        out.append(f'  {t["key"].replace("-", "")}["{t["key"]}<br/>{t["title"]}"]')
     for t in TICKETS:
         for d in t["blocked_by"]:
             out.append(f'  {d.replace("-", "")} --> {t["key"].replace("-", "")}')
-    out += ["```", "", "Arrow `A --> B` = *A blocks B* (B cannot be finished before A).", "",
-            "## Sprint plan", "",
-            "| Sprint | Goal | Tickets |", "|---|---|---|"]
-    for s, goal in SPRINTS.items():
-        keys = ", ".join(t["key"] for t in TICKETS if t["sprint"] == s)
-        out.append(f"| {s} | {goal} | {keys} |")
+    out += ["```", "", "Arrow `A --> B` = *A blocks B* (B cannot be finished before A).", ""]
     out += ["", "## Summary", "",
-            "| Ticket | Title | Block | Priority | List | Blocked by | Blocks |", "|---|---|---|---|---|---|---|"]
+            "| Ticket | Title | Block | Priority | List | Parent tickets | Child tickets |", "|---|---|---|---|---|---|---|"]
     for t in sorted(TICKETS, key=lambda t: (t["sprint"], t["key"])):
         out.append(f"| [{t['key']}]({url(t['key'])}) | {t['title']} | {t['epic']} | {t['priority']} | {t['list']} | "
                    f"{', '.join(t['blocked_by']) or '—'} | {', '.join(t['blocks']) or '—'} |")
@@ -99,7 +94,7 @@ def markdown():
     out += ["", "## Tickets", ""]
     for t in sorted(TICKETS, key=lambda t: (t["sprint"], t["key"])):
         out += [f"### {t['key']} · {t['title']}", "",
-                f"**List:** {t['list']} · **Sprint:** {t['sprint']} · **Block:** {t['epic']} · "
+                f"**List:** {t['list']} · **Block:** {t['epic']} · "
                 f"**Actor:** {t['actor']} · **Priority:** {t['priority']} · **Use case:** {t['uc']} · "
                 f"**Wireframes:** {t['wireframes']} · [Trello card]({url(t['key'])})", "",
                 f"> {t['story']}", "",
@@ -112,7 +107,7 @@ def markdown():
         for name, items in t.get("checklists", {}).items():
             out += ["", f"**{name}**", ""] + [f"- [ ] {a}" for a in items]
         if t["ac"]:
-            out += ["", "**Acceptance criteria**", ""] + [f"- [ ] {a}" for a in t["ac"]]
+            out += ["", "**Requirements (to do)**", ""] + [f"- [ ] {a}" for a in t["ac"]]
         out += ["", "**Gherkin**", "", "```gherkin", t["gherkin"], "```", ""]
     return "\n".join(out)
 

@@ -1,4 +1,4 @@
-"""Create the Learn@Home Kanban on GitHub: labels, sprint milestones, one issue per
+"""Create the Learn@Home Kanban on GitHub: labels, one issue per
 ticket (with dependencies), and a GitHub Projects board with the Kanban columns.
 
 Requirements: GitHub CLI logged in with the project scope:
@@ -14,7 +14,7 @@ import json
 import subprocess
 import sys
 
-from board_data import QUESTIONS, SPRINTS, TICKETS
+from board_data import QUESTIONS, TICKETS
 
 OWNER = "hassiba98"
 REPO = "learn-home"
@@ -64,21 +64,23 @@ def issue_body(t, numbers):
         return f"#{numbers[key]} {key}" if key in numbers else key
 
     lines = [f"> {t['story']}", "",
-             "| Functional block | Actor | Priority | Use case | Wireframes | Sprint |",
-             "|---|---|---|---|---|---|",
-             f"| {t['epic']} | {t['actor']} | {t['priority']} | {t['uc']} | {t['wireframes']} | {t['sprint']} |",
-             "", "## Dependencies", ""]
-    lines.append("**Blocked by:** " + (", ".join(ref(k) for k in t["blocked_by"]) or "none, can start now"))
+             "| Functional block | Actor | Priority | Use case | Wireframes |",
+             "|---|---|---|---|---|",
+             f"| {t['epic']} | {t['actor']} | {t['priority']} | {t['uc']} | {t['wireframes']} |",
+             "", ""]
+    lines.append("**⬆️ Parent tickets:** " + (", ".join(ref(k) for k in t["blocked_by"]) or "none, can start now"))
     lines.append("")
-    lines.append("**Blocks:** " + (", ".join(ref(k) for k in t["blocks"]) or "nothing"))
+    lines.append("**⬇️ Child tickets:** " + (", ".join(ref(k) for k in t["blocks"]) or "nothing"))
     if t["relates"]:
         lines += ["", "**Related to:** " + ", ".join(ref(k) for k in t["relates"])]
     if t["note"]:
         lines += ["", f"> **Note:** {t['note']}"]
-    lines += ["", "## Acceptance criteria", ""] + [f"- [ ] {a}" for a in t["ac"]]
-    lines += ["", "## Gherkin scenarios", "", "```gherkin", t["gherkin"], "```", "",
-              "## Definition of Done", "",
-              "All acceptance criteria checked, Gherkin scenarios automated and green, code reviewed, merged."]
+    for name, items in t.get("checklists", {}).items():
+        lines += ["", f"**{name}**", ""] + [f"- [ ] {a}" for a in items]
+    if t["ac"]:
+        lines += ["", "**Requirements (to do)**", ""] + [f"- [ ] {a}" for a in t["ac"]]
+    lines += ["", "**QA – Gherkin scenarios**", "", "```gherkin", t["gherkin"], "```", "",
+              ]
     return "\n".join(lines)
 
 
@@ -104,36 +106,29 @@ def main():
     global DRY_RUN
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--no-project", action="store_true", help="only create labels, milestones and issues")
+    parser.add_argument("--no-project", action="store_true", help="only create labels and issues")
     DRY_RUN = parser.parse_args().dry_run
     no_project = parser.parse_args().no_project
     repo = f"{OWNER}/{REPO}"
 
-    print("1/5 Labels")
+    print("1/4 Labels")
     for name, (color, desc) in LABELS.items():
         gh("label", "create", name, "--repo", repo, "--color", color, "--description", desc, "--force")
 
-    print("2/5 Milestones (sprints)")
-    for s, goal in SPRINTS.items():
-        try:
-            gh("api", f"repos/{repo}/milestones", "-f", f"title=Sprint {s}", "-f", f"description={goal}")
-        except RuntimeError:
-            print(f"   Sprint {s} already exists, kept")
-
-    print("3/5 Issues")
+    print("2/4 Issues")
     numbers, urls = {}, {}
     ordered = sorted(TICKETS, key=lambda t: (t["sprint"], t["key"]))
     for t in ordered:
         labels = [t["epic"], t["priority"]]
         labels.append({"Blocked": "blocked", "Ready for Dev": "ready for dev"}.get(column_of(t), ""))
         url, num = create_issue(f"{t['key']} · {t['title']}", issue_body(t, {}),
-                                [label for label in labels if label], f"Sprint {t['sprint']}")
+                                [label for label in labels if label])
         numbers[t["key"]], urls[t["key"]] = num, url
         print(f"   {t['key']} -> {url}")
     url, num = create_issue("Open questions for Learn@Home", questions_body(numbers), ["client question"])
     numbers["QUESTIONS"], urls["QUESTIONS"] = num, url
 
-    print("4/5 Dependency links")
+    print("3/4 Dependency links")
     for t in ordered:  # second pass: now every issue number is known
         gh("issue", "edit", str(numbers[t["key"]]), "--repo", repo, "--body-file", "-",
            stdin=issue_body(t, numbers))
@@ -147,7 +142,7 @@ def main():
 
     if no_project:
         return
-    print("5/5 Project board")
+    print("4/4 Project board")
     project = json.loads(gh("project", "create", "--owner", OWNER, "--title", PROJECT_TITLE,
                             "--format", "json") or '{"number": 0, "id": ""}')
     pnum, pid = str(project["number"]), project["id"]

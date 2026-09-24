@@ -12,7 +12,7 @@ This document mirrors the Trello board. It is generated from `kanban/board_data.
 | 📘 Read me & Client questions | Legend + questions to validate with Learn@Home |
 | Backlog (Should / later) | Priority *Should*: not in the first version unless the client decides otherwise |
 | ⛔ Blocked | *Must* tickets waiting for at least one other ticket (see **Blocked by**) |
-| ✅ Ready for Dev (Sprint 1) | Nothing blocks them: the team starts here |
+| ✅ Ready for Dev | Nothing blocks them: the team starts here |
 | In Progress / Code Review / QA / Done | Normal flow. QA = Gherkin scenarios automated and green |
 
 **Rule:** a ticket moves from *Blocked* to *Ready for Dev* when every ticket in its *Blocked by* checklist is in *Done*.
@@ -23,23 +23,23 @@ Labels (colour = functional block): 🟢 Authentication · 🔵 Dashboard · �
 
 ```mermaid
 graph LR
-  EN01["EN-01<br/>Foundation: domain, hosting, HTTPS and Python project setup<br/>S1"]
-  US01["US-01<br/>Create an account<br/>S1"]
-  US02["US-02<br/>Log in (+ protected pages)<br/>S1"]
-  US03["US-03<br/>Recover forgotten password<br/>S2"]
-  US04["US-04<br/>Log out<br/>S2"]
-  US05["US-05<br/>View my dashboard (page + menu)<br/>S2"]
-  US06["US-06<br/>Dashboard: view to-do list (tasks)<br/>S3"]
-  US07["US-07<br/>Dashboard: view upcoming appointments<br/>S3"]
-  US08["US-08<br/>Dashboard: unread messages counter<br/>S4"]
-  US09["US-09<br/>Send and read instant messages<br/>S3"]
-  US10["US-10<br/>Manage contacts (add / delete)<br/>S2"]
-  US11["US-11<br/>View chat history<br/>S4"]
-  US12["US-12<br/>View my calendar<br/>S2"]
-  US13["US-13<br/>View appointment details<br/>S3"]
-  US14["US-14<br/>Schedule an appointment with a student (volunteer)<br/>S4"]
-  US15["US-15<br/>Create and manage my own tasks<br/>S2"]
-  US16["US-16<br/>Create a task for a followed student (volunteer)<br/>S3"]
+  EN01["EN-01<br/>Foundation: domain, hosting, HTTPS and Python project setup"]
+  US01["US-01<br/>Create an account"]
+  US02["US-02<br/>Log in (+ protected pages)"]
+  US03["US-03<br/>Recover forgotten password"]
+  US04["US-04<br/>Log out"]
+  US05["US-05<br/>View my dashboard (page + menu)"]
+  US06["US-06<br/>Dashboard: view to-do list (tasks)"]
+  US07["US-07<br/>Dashboard: view upcoming appointments"]
+  US08["US-08<br/>Dashboard: unread messages counter"]
+  US09["US-09<br/>Send and read instant messages"]
+  US10["US-10<br/>Manage contacts (add / delete)"]
+  US11["US-11<br/>View chat history"]
+  US12["US-12<br/>View my calendar"]
+  US13["US-13<br/>View appointment details"]
+  US14["US-14<br/>Schedule an appointment with a student (volunteer)"]
+  US15["US-15<br/>Create and manage my own tasks"]
+  US16["US-16<br/>Create a task for a followed student (volunteer)"]
   EN01 --> US01
   EN01 --> US02
   US01 --> US03
@@ -66,22 +66,14 @@ graph LR
 
 Arrow `A --> B` = *A blocks B* (B cannot be finished before A).
 
-## Sprint plan
-
-| Sprint | Goal | Tickets |
-|---|---|---|
-| 1 | Foundation + authentication core (the entry point of every other feature) | EN-01, US-01, US-02 |
-| 2 | Every feature that only needs a logged-in user: log out, password recovery, dashboard page, contacts, calendar, own tasks | US-03, US-04, US-05, US-10, US-12, US-15 |
-| 3 | Features that build on sprint 2: messaging, appointment details, tasks for students, dashboard blocks (tasks, appointments) | US-06, US-07, US-09, US-13, US-16 |
-| 4 | Features that build on sprint 3: unread counter, chat history, + US-14 (Should) | US-08, US-11, US-14 |
 
 ## Summary
 
-| Ticket | Title | Block | Priority | List | Blocked by | Blocks |
+| Ticket | Title | Block | Priority | List | Parent tickets | Child tickets |
 |---|---|---|---|---|---|---|
-| [EN-01](https://trello.com/c/J3nnZnae) | Foundation: domain, hosting, HTTPS and Python project setup | Foundation | Must | ✅ Ready for Dev (Sprint 1) | — | US-01, US-02, US-14, US-16 |
-| [US-01](https://trello.com/c/jP0SNbZu) | Create an account | Authentication | Must | ✅ Ready for Dev (Sprint 1) | EN-01 | US-03 |
-| [US-02](https://trello.com/c/6zpG0zaB) | Log in (+ protected pages) | Authentication | Must | ✅ Ready for Dev (Sprint 1) | EN-01 | US-03, US-04, US-05, US-10, US-12, US-15 |
+| [EN-01](https://trello.com/c/J3nnZnae) | Foundation: domain, hosting, HTTPS and Python project setup | Foundation | Must | ✅ Ready for Dev | — | US-01, US-02, US-14, US-16 |
+| [US-01](https://trello.com/c/jP0SNbZu) | Create an account | Authentication | Must | ✅ Ready for Dev | EN-01 | US-03 |
+| [US-02](https://trello.com/c/6zpG0zaB) | Log in (+ protected pages) | Authentication | Must | ✅ Ready for Dev | EN-01 | US-03, US-04, US-05, US-10, US-12, US-15 |
 | [US-03](https://trello.com/c/3OUMsbTY) | Recover forgotten password | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-01, US-02 | — |
 | [US-04](https://trello.com/c/N9p7OIYh) | Log out | Authentication | Must | ⛔ Blocked (waiting on dependencies) | US-02 | — |
 | [US-05](https://trello.com/c/4iWti71s) | View my dashboard (page + menu) | Dashboard | Must | ⛔ Blocked (waiting on dependencies) | US-02 | US-06, US-07, US-08 |
@@ -110,7 +102,7 @@ Arrow `A --> B` = *A blocks B* (B cannot be finished before A).
 
 ### EN-01 · Foundation: domain, hosting, HTTPS and Python project setup
 
-**List:** ✅ Ready for Dev (Sprint 1) · **Sprint:** 1 · **Block:** Foundation · **Actor:** Dev team · **Priority:** Must · **Use case:** - · **Wireframes:** All (shared header/menu) · [Trello card](https://trello.com/c/J3nnZnae)
+**List:** ✅ Ready for Dev · **Block:** Foundation · **Actor:** Dev team · **Priority:** Must · **Use case:** - · **Wireframes:** All (shared header/menu) · [Trello card](https://trello.com/c/J3nnZnae)
 
 > First ticket to do. Prepare the ground before coding the Learn@Home website in Python: domain name, hosting, HTTPS, project skeleton, and the user base shared by all the other tickets.
 
@@ -159,7 +151,7 @@ Feature: Foundation
 
 ### US-01 · Create an account
 
-**List:** ✅ Ready for Dev (Sprint 1) · **Sprint:** 1 · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-01 · **Wireframes:** 1. Login, 2. Create account · [Trello card](https://trello.com/c/jP0SNbZu)
+**List:** ✅ Ready for Dev · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-01 · **Wireframes:** 1. Login, 2. Create account · [Trello card](https://trello.com/c/jP0SNbZu)
 
 > As a visitor, I want to create an account with my email and a password, so that I can access the Learn@Home platform.
 
@@ -168,7 +160,7 @@ Feature: Foundation
 - ↔️ **Related to:** US-02
 - ℹ️ Can start in parallel with EN-01 (form + validation rules), then plugs into the User model once EN-01 is merged.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The login page contains a "Create an account" link that opens the account creation page.
 - [ ] AC2. The form contains: first name, last name, email, password, password confirmation and role (Student or Volunteer). All fields are mandatory.
@@ -196,7 +188,7 @@ Feature: Create an account
 
 ### US-02 · Log in (+ protected pages)
 
-**List:** ✅ Ready for Dev (Sprint 1) · **Sprint:** 1 · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-02 · **Wireframes:** 1. Login · [Trello card](https://trello.com/c/6zpG0zaB)
+**List:** ✅ Ready for Dev · **Block:** Authentication · **Actor:** Visitor · **Priority:** Must · **Use case:** UC-02 · **Wireframes:** 1. Login · [Trello card](https://trello.com/c/6zpG0zaB)
 
 > As a visitor who has an account, I want to log in with my email and password, so that I can access my personal space.
 
@@ -205,7 +197,7 @@ Feature: Create an account
 - ↔️ **Related to:** US-01
 - ℹ️ Critical path: 6 tickets wait for this one. Until US-05 exists, AC2 redirects to a temporary empty dashboard page.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The login page contains an Email field, a Password field, a "Log in" button, a "Forgot password?" link and a "Create an account" link.
 - [ ] AC2. With valid credentials, the user is redirected to his dashboard.
@@ -238,7 +230,7 @@ Feature: Log in
 
 ### US-03 · Recover forgotten password
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 2 · **Block:** Authentication · **Actor:** Visitor, Email Service · **Priority:** Must · **Use case:** UC-03 · **Wireframes:** 1. Login, 3. Forgot password · [Trello card](https://trello.com/c/3OUMsbTY)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Authentication · **Actor:** Visitor, Email Service · **Priority:** Must · **Use case:** UC-03 · **Wireframes:** 1. Login, 3. Forgot password · [Trello card](https://trello.com/c/3OUMsbTY)
 
 > As a visitor who forgot my password, I want to receive a reset link by email, so that I can choose a new password and access my account again.
 
@@ -246,7 +238,7 @@ Feature: Log in
 - ➡️ **Blocks:** nothing
 - ℹ️ Needs the password rules of US-01 and the login page of US-02. Also needs an email-sending service (external actor 'Email Service').
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The "Forgot password?" link on the login page opens a page where the user enters his email.
 - [ ] AC2. If the email matches an account, the Email Service sends a password reset link to this address.
@@ -274,7 +266,7 @@ Feature: Recover forgotten password
 
 ### US-04 · Log out
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 2 · **Block:** Authentication · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-04 · **Wireframes:** 4 to 8 (header) · [Trello card](https://trello.com/c/N9p7OIYh)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Authentication · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-04 · **Wireframes:** 4 to 8 (header) · [Trello card](https://trello.com/c/N9p7OIYh)
 
 > As a registered user, I want to log out, so that nobody else can access my account from the same device.
 
@@ -283,7 +275,7 @@ Feature: Recover forgotten password
 - ↔️ **Related to:** EN-01
 - ℹ️ The button lives in the shared header created in EN-01.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. A "Log out" button is visible on every page when the user is logged in.
 - [ ] AC2. Clicking on it ends the session and redirects the user to the login page.
@@ -307,7 +299,7 @@ Feature: Log out
 
 ### US-05 · View my dashboard (page + menu)
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 2 · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-05 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/4iWti71s)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-05 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/4iWti71s)
 
 > As a registered user, I want to see a dashboard when I log in, so that I get an overview of my important information at a glance.
 
@@ -315,7 +307,7 @@ Feature: Log out
 - ➡️ **Blocks:** US-06, US-07, US-08
 - ℹ️ Delivers the page and its 3 empty blocks; their content comes from US-06, US-07 and US-08.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The dashboard is the first page displayed after a successful login.
 - [ ] AC2. It always displays three blocks: my to-do list (US-06), my upcoming appointments (US-07) and my unread messages counter (US-08).
@@ -334,7 +326,7 @@ Feature: View my dashboard
 
 ### US-10 · Manage contacts (add / delete)
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 2 · **Block:** Chat · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-10 · **Wireframes:** 5. Chat · [Trello card](https://trello.com/c/8iU5i7Jb)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Chat · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-10 · **Wireframes:** 5. Chat · [Trello card](https://trello.com/c/8iU5i7Jb)
 
 > As a registered user, I want to add and delete contacts, so that my contact list only contains the people I work with.
 
@@ -343,7 +335,7 @@ Feature: View my dashboard
 - ↔️ **Related to:** client questions
 - ℹ️ First Chat ticket: it creates the Chat page and the conversation list. Search scope (all users or only the assigned volunteer/students?): see client question Q4.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The "+" button opens a search field to find a registered user by name or email.
 - [ ] AC2. Adding a contact creates a new conversation in my list.
@@ -368,7 +360,7 @@ Feature: Manage contacts (add / delete)
 
 ### US-12 · View my calendar
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 2 · **Block:** Calendar · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-12 · **Wireframes:** 6. Calendar · [Trello card](https://trello.com/c/dmnQ7KxL)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Calendar · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-12 · **Wireframes:** 6. Calendar · [Trello card](https://trello.com/c/dmnQ7KxL)
 
 > As a registered user, I want to see my events and appointments in a calendar, so that I can organise my week.
 
@@ -376,7 +368,7 @@ Feature: Manage contacts (add / delete)
 - ➡️ **Blocks:** US-07, US-13, US-14
 - ℹ️ Creates the Appointment data (title, date, start/end time, participants, description), filled with seed data until US-14 is done.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The calendar opens on the current week. The user can switch to a day, week or month view.
 - [ ] AC2. The user can navigate to the previous or next period. Today is highlighted.
@@ -400,7 +392,7 @@ Feature: View my calendar
 
 ### US-15 · Create and manage my own tasks
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 2 · **Block:** Task management · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-15 · **Wireframes:** 8. Task management · [Trello card](https://trello.com/c/uJETs0om)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Task management · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-15 · **Wireframes:** 8. Task management · [Trello card](https://trello.com/c/uJETs0om)
 
 > As a registered user, I want to create, view, update and mark my tasks as done, so that I stay organised in my work.
 
@@ -408,7 +400,7 @@ Feature: View my calendar
 - ➡️ **Blocks:** US-06, US-16
 - ℹ️ Creates the Task data (title, description, due date, creator, assignee, done).
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. A task has a title (mandatory), a description (optional) and a due date (mandatory).
 - [ ] AC2. A task created with this feature is automatically assigned to its creator: a student can only create tasks for himself.
@@ -439,7 +431,7 @@ Feature: Create and manage my own tasks
 
 ### US-06 · Dashboard: view to-do list (tasks)
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 3 · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-06 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/5sFSxo39)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-06 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/5sFSxo39)
 
 > As a registered user, I want to see my tasks to do on my dashboard, so that I know what I have to do next.
 
@@ -448,7 +440,7 @@ Feature: Create and manage my own tasks
 - ↔️ **Related to:** US-16
 - ℹ️ Tasks assigned by a volunteer (US-16) must also appear here, with "Assigned by".
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The block lists the tasks that are not done yet, sorted by due date (closest first).
 - [ ] AC2. A maximum of 5 tasks is displayed, with a "See all" link to the Task management page.
@@ -472,7 +464,7 @@ Feature: View to-do list (tasks)
 
 ### US-07 · Dashboard: view upcoming appointments
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 3 · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-07 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/Avxd1ueY)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-07 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/Avxd1ueY)
 
 > As a registered user, I want to see my upcoming appointments on my dashboard, so that I don't miss a tutoring session.
 
@@ -481,7 +473,7 @@ Feature: View to-do list (tasks)
 - ↔️ **Related to:** US-14, client questions
 - ℹ️ Until US-14 exists, appointments come from test data.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The block lists my events and appointments of the next 7 days, in chronological order.
 - [ ] AC2. Each item shows the date, the time, the title and the other participant.
@@ -504,7 +496,7 @@ Feature: View upcoming appointments
 
 ### US-09 · Send and read instant messages
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 3 · **Block:** Chat · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-09 · **Wireframes:** 5. Chat · [Trello card](https://trello.com/c/d42rg07h)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Chat · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-09 · **Wireframes:** 5. Chat · [Trello card](https://trello.com/c/d42rg07h)
 
 > As a registered user, I want to exchange instant messages with my contacts, so that I can communicate directly on the site instead of WhatsApp or SMS.
 
@@ -513,7 +505,7 @@ Feature: View upcoming appointments
 - ↔️ **Related to:** client questions
 - ℹ️ A conversation only exists once a contact is added (US-10 AC2). Profile picture: see client question Q3.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The Chat page shows the list of my conversations on the left and the selected conversation on the right.
 - [ ] AC2. Each message shows the sender's profile picture, his name, the timestamp and a read / unread indicator.
@@ -545,14 +537,14 @@ Feature: Send and read instant messages
 
 ### US-13 · View appointment details
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 3 · **Block:** Calendar · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-13 · **Wireframes:** 6. Calendar · [Trello card](https://trello.com/c/3XE0Mj9A)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Calendar · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-13 · **Wireframes:** 6. Calendar · [Trello card](https://trello.com/c/3XE0Mj9A)
 
 > As a registered user, I want to click on an appointment to see its details, so that I know exactly what is planned.
 
 - ⛔ **Blocked by:** US-12
 - ➡️ **Blocks:** nothing
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. Clicking on an event opens a detail window with the title, date, start and end time, participants and description.
 - [ ] AC2. Closing the window brings the user back to the calendar.
@@ -569,7 +561,7 @@ Feature: View appointment details
 
 ### US-16 · Create a task for a followed student (volunteer)
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 3 · **Block:** Task management · **Actor:** Volunteer · **Priority:** Must · **Use case:** UC-16 · **Wireframes:** 8. Task management · [Trello card](https://trello.com/c/Gkx8gA8a)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Task management · **Actor:** Volunteer · **Priority:** Must · **Use case:** UC-16 · **Wireframes:** 8. Task management · [Trello card](https://trello.com/c/Gkx8gA8a)
 
 > As a volunteer, I want to create a task for one of my students, so that I can guide their work between our sessions.
 
@@ -578,7 +570,7 @@ Feature: View appointment details
 - ↔️ **Related to:** US-06
 - ℹ️ Adds the 'Assign to (volunteer only)' field to the form built in US-15, using the 'follows' link from EN-01.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. When a volunteer creates a task, he can choose the assignee among himself and the students he follows only.
 - [ ] AC2. The task appears in the student's task list and dashboard, with the mention "Assigned by" followed by the volunteer's name.
@@ -602,7 +594,7 @@ Feature: Create a task for a followed student
 
 ### US-08 · Dashboard: unread messages counter
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 4 · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-08 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/MIN2KBjK)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Dashboard · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-08 · **Wireframes:** 4. Dashboard · [Trello card](https://trello.com/c/MIN2KBjK)
 
 > As a registered user, I want to see how many messages I have not read, so that I know if someone is waiting for my answer.
 
@@ -610,7 +602,7 @@ Feature: Create a task for a followed student
 - ➡️ **Blocks:** nothing
 - ℹ️ Reuses the read/unread status and the real-time mechanism built in US-09.
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. The counter shows the total number of unread messages, all conversations included.
 - [ ] AC2. It is updated automatically when a new message arrives and when I read messages, without reloading the page.
@@ -633,14 +625,14 @@ Feature: View unread messages counter
 
 ### US-11 · View chat history
 
-**List:** ⛔ Blocked (waiting on dependencies) · **Sprint:** 4 · **Block:** Chat · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-11 · **Wireframes:** 5. Chat · [Trello card](https://trello.com/c/AGUa2O4v)
+**List:** ⛔ Blocked (waiting on dependencies) · **Block:** Chat · **Actor:** Registered User · **Priority:** Must · **Use case:** UC-11 · **Wireframes:** 5. Chat · [Trello card](https://trello.com/c/AGUa2O4v)
 
 > As a registered user, I want to scroll back through my past messages, so that I can find information that was shared earlier.
 
 - ⛔ **Blocked by:** US-09
 - ➡️ **Blocks:** nothing
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. When a conversation is opened, the 50 most recent messages are displayed.
 - [ ] AC2. Scrolling up loads older messages.
@@ -660,7 +652,7 @@ Feature: View chat history
 
 ### US-14 · Schedule an appointment with a student (volunteer)
 
-**List:** Backlog (Should / later) · **Sprint:** 4 · **Block:** Calendar · **Actor:** Volunteer · **Priority:** Should · **Use case:** UC-14 · **Wireframes:** 6. Calendar, 7. New appointment · [Trello card](https://trello.com/c/EDY1wLXp)
+**List:** Backlog (Should / later) · **Block:** Calendar · **Actor:** Volunteer · **Priority:** Should · **Use case:** UC-14 · **Wireframes:** 6. Calendar, 7. New appointment · [Trello card](https://trello.com/c/EDY1wLXp)
 
 > As a volunteer, I want to schedule an appointment with one of my students, so that we can plan our weekly tutoring session.
 
@@ -669,7 +661,7 @@ Feature: View chat history
 - ↔️ **Related to:** US-07, client questions
 - ℹ️ Only way to create appointments: we recommend raising it to Must (client question Q2).
 
-**Acceptance criteria**
+**Requirements (to do)**
 
 - [ ] AC1. Only volunteers see the "New appointment" button.
 - [ ] AC2. The student list only contains the students followed by the volunteer.
